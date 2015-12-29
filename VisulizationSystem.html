@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>VisulizationSystem</title>
+</head>
+<body> 
+<!--         <p>Hello World 1</p>
+        <p id="myid">Hello World 2</p>
+        <p>Apple</p>
+        <p>Pear</p> -->
+        <script src="d3.js" charset="utf-8"></script> 
+        <script>  
+        //simple demo about text
+			// var dataset = ["i like dog","i like cat","i like nothing","i like you"];
+			// var body = d3.select("body");
+			// var p = d3.selectAll("p");
+			// p.data(dataset);
+			// p.text(function(d){
+			// 	return d;
+			// });
+			// body.append('p').text("append");
+			// body.insert('p','#myid').text("insert before Hello World 2");
+			// body.selectAll('p').remove();
+		//simple demo about graphics
+			var width = 300;
+			var height = 300;
+			var svg = d3.select("body")
+			.append("svg")
+			.attr("width",width)
+			.attr("height",height);
+
+			var dataset=[250,210,170,130,90];
+
+			var rectHeight = 25;
+			svg.selectAll("rect")
+			.data(dataset)
+			.enter()
+			.append("rect")
+			.attr("x",20)
+			.attr("y",function(d,i){
+				return i*rectHeight;
+			})
+			.attr("width",function(d){
+				return d;
+			})
+			.attr("height",rectHeight-2)
+			.attr("fill","steelblue");
+
+        </script> 
+</body> 
+</html>
