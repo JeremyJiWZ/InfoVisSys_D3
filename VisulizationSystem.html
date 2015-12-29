@@ -2,8 +2,23 @@
 <html>
 <head>
 	<title>VisulizationSystem</title>
+	<link rel="stylesheet" href="mycss.css" type="text/css" />
+	<style>
+	.axis path,
+	.axis line{
+    fill: none;
+    stroke: black;
+    shape-rendering: crispEdges;
+	}
+ 
+	.axis text {
+    font-family: sans-serif;
+    font-size: 11px;
+	}
+	</style> 
 </head>
-<body> 
+<body > 
+
 <!--         <p>Hello World 1</p>
         <p id="myid">Hello World 2</p>
         <p>Apple</p>
@@ -22,29 +37,65 @@
 			// body.insert('p','#myid').text("insert before Hello World 2");
 			// body.selectAll('p').remove();
 		//simple demo about graphics
-			var width = 300;
-			var height = 300;
+			var width = 400;
+			var height = 400;
 			var svg = d3.select("body")
 			.append("svg")
 			.attr("width",width)
 			.attr("height",height);
 
-			var dataset=[250,210,170,130,90];
+			var padding = {left:30,right:30,top:20,bottom:20};
 
-			var rectHeight = 25;
-			svg.selectAll("rect")
-			.data(dataset)
-			.enter()
-			.append("rect")
-			.attr("x",20)
-			.attr("y",function(d,i){
-				return i*rectHeight;
-			})
-			.attr("width",function(d){
-				return d;
-			})
-			.attr("height",rectHeight-2)
-			.attr("fill","steelblue");
+			// var dataset=[250,210,170,130,90];
+			var dataset=[10,20,40,45,30,20,5];
+			
+			var xScale = d3.scale.ordinal()
+						.domain(d3.range(dataset.length))
+						.rangeRoundBands([0,width-padding.left-padding.right]);	
+
+			var yScale = d3.scale.linear()
+						.domain([0,d3.max(dataset)+10])
+						.range([height-padding.top-padding.bottom,0]);	
+
+			//define x axis
+			var xAxis = d3.svg.axis()
+						.scale(xScale)
+						.orient("bottom");
+			//define y axis
+			var yAxis = d3.svg.axis()
+						.scale(yScale)
+						.orient("left");	
+
+			var rectWidth = 25;
+			var rectPadding =2;
+			var rects = svg.selectAll(".MyRect")
+				.data(dataset)
+				.enter()
+				.append("rect")
+				.attr("class","MyRect")
+				.attr("transform","translate("+padding.left+","+padding.top+")")
+				.attr("x",function(d,i){
+					return xScale(i)+rectPadding;
+				})
+				.attr("y",function(d){
+					return yScale(d);
+				})
+				.attr("width",xScale.rangeBand()-rectPadding)//something go wrong here!
+				// .attr("width",20-rectPadding)//something go wrong here!
+				// .attr("width",10)
+				.attr("height",function(d){
+					return height-padding.top-padding.bottom-yScale(d);
+				});
+			//add x axis
+			svg.append("g")
+				.attr("class","axis")
+				.attr("transform","translate("+padding.left+","+(height-padding.bottom)+")")
+				.call(xAxis);
+			//add y axis
+			svg.append("g")
+				.attr("class","axis")
+				.attr("transform","translate("+padding.left+","+padding.top+")")
+				.call(yAxis);
 
         </script> 
 </body> 
