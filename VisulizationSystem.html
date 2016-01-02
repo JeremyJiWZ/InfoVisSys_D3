@@ -15,16 +15,22 @@
     font-family: sans-serif;
     font-size: 11px;
 	}
-	</style> 
+	#container{	
+	margin: :auto auto;
+	width:1024;
+	}
+	</style>
 </head>
-<body > 
+<div id="container">
+<body >
 
-<!--         <p>Hello World 1</p>
-        <p id="myid">Hello World 2</p>
-        <p>Apple</p>
-        <p>Pear</p> -->
-        <script src="d3.js" charset="utf-8"></script> 
-        <script>  
+	<!--         <p>Hello World 1</p>
+<p id="myid">Hello World 2</p>
+<p>Apple</p>
+<p>Pear</p>
+-->
+<script src="d3.js" charset="utf-8"></script>
+<script>  
         //simple demo about text
 			// var dataset = ["i like dog","i like cat","i like nothing","i like you"];
 			// var body = d3.select("body");
@@ -54,7 +60,7 @@
 						.rangeRoundBands([0,width-padding.left-padding.right]);	
 
 			var yScale = d3.scale.linear()
-						.domain([0,d3.max(dataset)+10])
+						.domain([0,d3.max(dataset)])
 						.range([height-padding.top-padding.bottom,0]);	
 
 			//define x axis
@@ -67,7 +73,7 @@
 						.orient("left");	
 
 			var rectWidth = 25;
-			var rectPadding =2;
+			var rectPadding =4;
 			var rects = svg.selectAll(".MyRect")
 				.data(dataset)
 				.enter()
@@ -77,16 +83,50 @@
 				.attr("x",function(d,i){
 					return xScale(i)+rectPadding;
 				})
+				.attr("y",height-padding.bottom-padding.top)
+				.attr("height",0)
+				.attr("width",xScale.rangeBand()-rectPadding)
+				.attr("fill","steelblue")
+				.on("mouseover",function(){
+					d3.select(this)
+					.attr("fill","yellow");
+				})
+				.on("mouseout",function(){
+					d3.select(this)
+					.attr("fill","steelblue");
+				})
+				.transition()
+				.ease("bounce")
+				.duration(2000)
 				.attr("y",function(d){
 					return yScale(d);
 				})
-				.attr("width",xScale.rangeBand()-rectPadding)//something go wrong here!
-				// .attr("width",20-rectPadding)//something go wrong here!
-				// .attr("width",10)
 				.attr("height",function(d){
 					return height-padding.top-padding.bottom-yScale(d);
-				});
-			//add x axis
+				})
+				.attr("fill","steelblue");
+
+				// rects.on("mouseover",function(d,i){
+				// 	d3.select(this)
+				// 	.attr("fill","yellow");
+				// })
+				// .on("mouseout",function(d,i){
+				// 	d3.select(this)
+				// 	.transition()
+		  //       	.duration(500)
+				// 	.attr("fill","steelblue");
+				// });
+			//添加交互事件
+			// rects.on("mouseover",function(){
+			// 	d3.select(this)
+			// 	.attr("fill","yellow");
+			// })
+			// .on("mouseout",function(){
+			// 	d3.select(this)
+			// 	.attr("fill","steelblue");
+			// });
+
+			// add x axis
 			svg.append("g")
 				.attr("class","axis")
 				.attr("transform","translate("+padding.left+","+(height-padding.bottom)+")")
@@ -96,7 +136,31 @@
 				.attr("class","axis")
 				.attr("transform","translate("+padding.left+","+padding.top+")")
 				.call(yAxis);
+//test
+	// 	var circle1 = svg.append("circle")
+	// 		.attr("cx",100)
+	// 		.attr("cy",100)
+	// 		.attr("r",45)
+	// 		.style("fill","red");
 
-        </script> 
-</body> 
+	// circle1.transition()
+	// 	.duration(1000)
+	// 	.attr("cx",300);
+
+	// var circle2 = svg.append("circle")
+	// 				.attr("cx", 100)
+	// 				.attr("cy", 200)
+	// 				.attr("r", 45)
+	// 				.style("fill","green");
+
+	// //在1.5秒（1500毫秒）内将圆心坐标由100变为300，
+	// //将颜色从绿色变为红色
+	// circle2.transition()
+	// 	.duration(1500)
+	// 	.attr("cx", 300)
+	// 	.style("fill","red");
+
+        </script>
+</body>
+	</div>
 </html>
