@@ -27,10 +27,10 @@
         // console.log(r*Math.cos(theta)+focus[0]);
         // console.log(r*Math.sin(theta)+focus[1]);
         // console.log(Math.min(r/dd,10));
-        return {x:r*dx/dd+focus[0],y:r*dy/dd+focus[1],z:Math.min(r/dd,10)};
+        // return {x:r*dx/dd+focus[0],y:r*dy/dd+focus[1],z:Math.min(r/dd,10)};
         // console.log(r);
         // console.log(theta);
-        // return {x: focus[0] + dx * k, y: focus[1] + dy * k, z: Math.min(k, 10)};
+        return {x: focus[0] + dx * k, y: focus[1] + dy * k, z: Math.min(k, 10)};
       }
 
       function rescale() {

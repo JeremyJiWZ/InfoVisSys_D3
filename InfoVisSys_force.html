@@ -1,18 +1,32 @@
 <html>  
   <head>  
         <meta charset="utf-8">  
-        <title>力导向图</title>  
+        <title>InfoVisSys</title> 
+        <link rel="stylesheet" href="mycss.css" type="text/css" />
+    <style>
+    .axis path,
+    .axis line{
+    fill: none;
+    stroke: black;
+    shape-rendering: crispEdges;
+    }
+ 
+    .axis text {
+    font-family: sans-serif;
+    font-size: 11px;
+    }
+    </style> 
   </head> 
     <body>  
 		<script src="./d3.js" charset="utf-8"></script> 
 		<script src="./fisheye.js" charset="utf-8"></script> 
         <script>
-        linelength = 100;
-        function linelong(d){linelength+=d;return;};
-        function loneshort(d){linelength-=d;return;};	
-        var button1 = d3.select("body").append("button")
-        	.attr("class","button01")
-        	.attr("text","longer");  
+        // linelength = 100;
+        // function linelong(d){linelength+=d;return;};
+        // function loneshort(d){linelength-=d;return;};	
+        // var button1 = d3.select("body").append("button")
+        // 	.attr("class","button01")
+        // 	.attr("text","longer");  
 					   
 		// var nodes = [ { name: "桂林"    }, { name: "广州" },
 		// 			  { name: "厦门"    }, { name: "杭州"   },
@@ -357,8 +371,8 @@
     {"source":76,"target":48,"value":1},
     {"source":76,"target":58,"value":1}];
 		
-		var width = 900;
-		var height = 900;
+		var width = 600;
+		var height = 600;
 		
 		
 		var svg = d3.select("body")
@@ -469,6 +483,100 @@
 				.attr("y2",function(d){return d.target.fisheye.y;});
 			});
 			// svg_texts.attr("font-size",function(d){return d.fisheye.z*10;});
+
+        var hisWidth = 1100;
+            var hisHeight = 200;
+            var his_svg = d3.select("body")
+            .append("svg")
+            .attr("width",hisWidth)
+            .attr("height",hisHeight);
+
+            var padding = {left:30,right:30,top:20,bottom:20};
+
+            // var dataset=[250,210,170,130,90];
+            var dataset=[10,1,3,3,1,1,1,1,1,1,1,36,2,1,1,1,9,7,7,7,7,7,7,15,11,16,11,17,4,8,2,4,1,2,6,6,6,6,6,3,1,11,3,3,2,1,1,2,22,7,2,7,2,1,4,19,2,11,15,11,9,11,13,12,13,12,10,1,10,10,10,9,3,2,2,7,7];
+            
+            var xScale = d3.scale.ordinal()
+                        .domain(d3.range(dataset.length))
+                        .rangeRoundBands([0,hisWidth-padding.left-padding.right]);  
+
+            var yScale = d3.scale.linear()
+                        .domain([0,d3.max(dataset)])
+                        .range([hisHeight-padding.top-padding.bottom,0]);   
+
+            //define x axis
+            var xAxis = d3.svg.axis()
+                        .scale(xScale)
+                        .orient("bottom");
+            //define y axis
+            var yAxis = d3.svg.axis()
+                        .scale(yScale)
+                        .orient("left");    
+
+            var rectWidth = 10;
+            var rectPadding =2;
+            var rects = his_svg.selectAll(".MyRect")
+                .data(dataset)
+                .enter()
+                .append("rect")
+                .attr("class","MyRect")
+                .attr("transform","translate("+padding.left+","+padding.top+")")
+                .attr("x",function(d,i){
+                    return xScale(i)+rectPadding;
+                })
+                .attr("y",hisHeight-padding.bottom-padding.top)
+                .attr("height",0)
+                .attr("width",xScale.rangeBand()-rectPadding)
+                .attr("fill","steelblue")
+                .on("mouseover",function(){
+                    d3.select(this)
+                    .attr("fill","yellow");
+                })
+                .on("mouseout",function(){
+                    d3.select(this)
+                    .attr("fill","steelblue");
+                })  
+                .transition()
+                .ease("bounce")
+                .duration(2000)
+                .attr("y",function(d){
+                    return yScale(d);
+                })
+                .attr("height",function(d){
+                    return hisHeight-padding.top-padding.bottom-yScale(d);
+                })
+                .attr("fill","steelblue");
+
+                // rects.on("mouseover",function(d,i){
+                //  d3.select(this)
+                //  .attr("fill","yellow");
+                // })
+                // .on("mouseout",function(d,i){
+                //  d3.select(this)
+                //  .transition()
+          //        .duration(500)
+                //  .attr("fill","steelblue");
+                // });
+            //添加交互事件
+            // rects.on("mouseover",function(){
+            //  d3.select(this)
+            //  .attr("fill","yellow");
+            // })
+            // .on("mouseout",function(){
+            //  d3.select(this)
+            //  .attr("fill","steelblue");
+            // });
+
+            // add x axis
+            his_svg.append("g")
+                .attr("class","axis")
+                .attr("transform","translate("+padding.left+","+(hisHeight-padding.bottom)+")")
+                .call(xAxis);
+            //add y axis
+            his_svg.append("g")
+                .attr("class","axis")
+                .attr("transform","translate("+padding.left+","+padding.top+")")
+                .call(yAxis);
 
         </script>  
 		

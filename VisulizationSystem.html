@@ -15,13 +15,8 @@
     font-family: sans-serif;
     font-size: 11px;
 	}
-	#container{	
-	margin: :auto auto;
-	width:1024;
-	}
-	</style>
+</style>
 </head>
-<div id="container">
 <body >
 
 	<!--         <p>Hello World 1</p>
@@ -43,25 +38,25 @@
 			// body.insert('p','#myid').text("insert before Hello World 2");
 			// body.selectAll('p').remove();
 		//simple demo about graphics
-			var width = 400;
-			var height = 400;
-			var svg = d3.select("body")
+			var hisWidth = 1100;
+			var hisHeight = 200;
+			var his_svg = d3.select("body")
 			.append("svg")
-			.attr("width",width)
-			.attr("height",height);
+			.attr("width",hisWidth)
+			.attr("height",hisHeight);
 
 			var padding = {left:30,right:30,top:20,bottom:20};
 
 			// var dataset=[250,210,170,130,90];
-			var dataset=[10,20,40,45,30,20,5];
+			var dataset=[10,1,3,3,1,1,1,1,1,1,1,36,2,1,1,1,9,7,7,7,7,7,7,15,11,16,11,17,4,8,2,4,1,2,6,6,6,6,6,3,1,11,3,3,2,1,1,2,22,7,2,7,2,1,4,19,2,11,15,11,9,11,13,12,13,12,10,1,10,10,10,9,3,2,2,7,7];
 			
 			var xScale = d3.scale.ordinal()
 						.domain(d3.range(dataset.length))
-						.rangeRoundBands([0,width-padding.left-padding.right]);	
+						.rangeRoundBands([0,hisWidth-padding.left-padding.right]);	
 
 			var yScale = d3.scale.linear()
 						.domain([0,d3.max(dataset)])
-						.range([height-padding.top-padding.bottom,0]);	
+						.range([hisHeight-padding.top-padding.bottom,0]);	
 
 			//define x axis
 			var xAxis = d3.svg.axis()
@@ -72,9 +67,9 @@
 						.scale(yScale)
 						.orient("left");	
 
-			var rectWidth = 25;
-			var rectPadding =4;
-			var rects = svg.selectAll(".MyRect")
+			var rectWidth = 10;
+			var rectPadding =2;
+			var rects = his_svg.selectAll(".MyRect")
 				.data(dataset)
 				.enter()
 				.append("rect")
@@ -83,7 +78,7 @@
 				.attr("x",function(d,i){
 					return xScale(i)+rectPadding;
 				})
-				.attr("y",height-padding.bottom-padding.top)
+				.attr("y",hisHeight-padding.bottom-padding.top)
 				.attr("height",0)
 				.attr("width",xScale.rangeBand()-rectPadding)
 				.attr("fill","steelblue")
@@ -94,7 +89,7 @@
 				.on("mouseout",function(){
 					d3.select(this)
 					.attr("fill","steelblue");
-				})
+				})	
 				.transition()
 				.ease("bounce")
 				.duration(2000)
@@ -102,7 +97,7 @@
 					return yScale(d);
 				})
 				.attr("height",function(d){
-					return height-padding.top-padding.bottom-yScale(d);
+					return hisHeight-padding.top-padding.bottom-yScale(d);
 				})
 				.attr("fill","steelblue");
 
@@ -127,12 +122,12 @@
 			// });
 
 			// add x axis
-			svg.append("g")
+			his_svg.append("g")
 				.attr("class","axis")
-				.attr("transform","translate("+padding.left+","+(height-padding.bottom)+")")
+				.attr("transform","translate("+padding.left+","+(hisHeight-padding.bottom)+")")
 				.call(xAxis);
 			//add y axis
-			svg.append("g")
+			his_svg.append("g")
 				.attr("class","axis")
 				.attr("transform","translate("+padding.left+","+padding.top+")")
 				.call(yAxis);
@@ -162,5 +157,4 @@
 
         </script>
 </body>
-	</div>
 </html>
